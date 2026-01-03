@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Restricted</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 100%);
+        }
+        .admin-container {
+            width: 100%;
+            max-width: 500px;
+            background: #0a0a0a;
+            border: 2px solid #ff0000;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+        }
+        .admin-container h1 {
+            color: #ff0000;
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 0 0 20px 0;
+        }
+        .warning {
+            color: #ff8800;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 10px;
+            background: rgba(255, 136, 0, 0.1);
+            border-left: 4px solid #ff8800;
+        }
+        .login-form {
+            margin-top: 30px;
+        }
+        .form-group {
+            margin: 20px 0;
+        }
+        .form-group label {
+            display: block;
+            color: #aaa;
+            margin-bottom: 8px;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: #1a1a1a;
+            border: 1px solid #444;
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff0000;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: #cc0000;
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        .submit-btn:hover {
+            background: #ff0000;
+        }
+        .footer-note {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 11px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <h1>[ SYSTEM ADMINISTRATION ]</h1>
+        <p class="warning">UNAUTHORIZED ACCESS IS PROHIBITED</p>
+        <hr style="border-color: #333;">
+        
+        <form action="/admin-login" method="POST" class="login-form">
+            <div class="form-group">
+                <label for="user">Admin ID</label>
+                <input type="text" id="user" name="user" placeholder="Enter admin ID" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="pass">Security Key</label>
+                <input type="password" id="pass" name="pass" placeholder="Enter security key" required>
+            </div>
+            
+            <button type="submit" class="submit-btn">AUTHENTICATE</button>
+        </form>
+        
+        <p class="footer-note">
+            This area is restricted to authorized personnel only
+        </p>
+    </div>
+</body>
+</html>

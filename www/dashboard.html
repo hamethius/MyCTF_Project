@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CTF Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+        }
+        .header h1 {
+            font-size: 32px;
+            letter-spacing: 8px;
+        }
+        .challenge-list {
+            background-color: #2d1b4e;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #7b00e0;
+        }
+        .challenge-item {
+            padding: 8px 0;
+            color: #e0e0e0;
+        }
+        .pro-tip {
+            font-size: 11px;
+            color: #888;
+            margin-top: 15px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" data-username="" data-flag1="false" data-flag2="false" data-flag3="false">
+        <!-- FLAG 1: {SOURCE_CODE_MASTER_2025} -->
+        <div class="header">
+            <h1>CTF DASHBOARD</h1>
+        </div>
+        <div class="dashboard-panel">
+            <p>Status: <span id="auth-status" style="color: #00ff00;">[AUTHENTICATED]</span></p>
+            <hr>
+            <h3>Mission Objectives:</h3>
+            <div class="challenge-list">
+                <div class="challenge-item">[1] Every website has secrets in plain sight...</div>
+                <div class="challenge-item">[2] Web crawlers know where not to go. Check what they avoid.</div>
+                <div class="challenge-item">[3] Admin panels are meant to keep intruders out. Time to test its strength.</div>
+            </div>
+            <p class="pro-tip">[*] Tools: gobuster, hydra, view-source</p>
+            <a href="/" class="logout-btn">Logout</a>
+        </div>
+        <div class="flags-section">
+            <div class="flag-submission">
+                <input type="text" class="flag-input" data-flag-index="0" placeholder="Enter Flag 1" required>
+                <button class="check-btn" onclick="submitFlag(this, 0)">Check</button>
+            </div>
+            <div class="flag-submission">
+                <input type="text" class="flag-input" data-flag-index="1" placeholder="Enter Flag 2" required>
+                <button class="check-btn" onclick="submitFlag(this, 1)">Check</button>
+            </div>
+            <div class="flag-submission">
+                <input type="text" class="flag-input" data-flag-index="2" placeholder="Enter Flag 3" required>
+                <button class="check-btn" onclick="submitFlag(this, 2)">Check</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Initialize the UI based on server-side data attributes
+            const container = document.querySelector('.container');
+            if (container) {
+                const flagStatuses = [
+                    container.getAttribute('data-flag1') === 'true',
+                    container.getAttribute('data-flag2') === 'true',
+                    container.getAttribute('data-flag3') === 'true'
+                ];
+
+                const checkButtons = document.querySelectorAll('.check-btn');
+                flagStatuses.forEach((status, index) => {
+                    if (status && checkButtons[index]) {
+                        // If already solved, set button to green 'CORRECT'
+                        checkButtons[index].classList.add('correct');
+                        checkButtons[index].textContent = 'CORRECT';
+                        // Disable input for solved flags
+                        document.querySelector(`[data-flag-index="${index}"]`).setAttribute('disabled', 'disabled');
+                    }
+                });
+            }
+        });
+
+        async function submitFlag(buttonElement, flagIndex) {
+            const inputElement = document.querySelector(`[data-flag-index="${flagIndex}"]`);
+            const flagValue = inputElement.value;
+            const originalText = 'Check';
+
+            // Prevent resubmission while processing
+            if(buttonElement.classList.contains('processing')) return;
+
+            // Simple client-side validation
+            if (!flagValue) {
+                alert("Please enter a flag value.");
+                return;
+            }
+
+            buttonElement.classList.add('processing');
+            buttonElement.textContent = '...';
+
+            try {
+                // Simulate an HTTP POST request to your server's flag submission endpoint
+                const response = await fetch('/submit-flag', {
+                    method: 'POST',
+                    // Ensure cookies (session cookie) are sent with the request
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Accept': 'text/plain'
+                    },
+                    // The server expects a key named 'flag_val' in the request body
+                    body: `flag_val=${encodeURIComponent(flagValue)}`
+                });
+
+                const resultHtml = await response.text();
+                // Check if the server responded with '[+] Flag X Correct!' (or similar)
+                const isCorrect = resultHtml.includes("[+] Flag " + (flagIndex + 1) + " Correct!");
+                
+                if (isCorrect) {
+                    buttonElement.classList.remove('processing');
+                    buttonElement.classList.add('correct');
+                    buttonElement.textContent = 'CORRECT';
+                    inputElement.setAttribute('disabled', 'disabled'); // Disable input on success
+                    alert("[+] Flag " + (flagIndex + 1) + " Captured!");
+                } else {
+                    buttonElement.classList.remove('processing');
+                    buttonElement.classList.add('wrong');
+                    buttonElement.textContent = 'WRONG!';
+
+                    // Revert to original 'Check' button after 2 seconds
+                    setTimeout(() => {
+                        buttonElement.classList.remove('wrong');
+                        buttonElement.textContent = originalText;
+                    }, 2000);
+                }
+
+            } catch (error) {
+                console.error('Submission error:', error);
+                buttonElement.classList.remove('processing');
+                buttonElement.textContent = 'ERROR';
+                setTimeout(() => {
+                    buttonElement.textContent = originalText;
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>

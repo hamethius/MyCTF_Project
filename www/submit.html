@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Submit Flags</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>🚩 Submit Your Found Flags</h2>
+        <p>Enter the flag you discovered to track your progress!</p>
+        <hr>
+        <form action="/submit-flag" method="POST">
+            <label for="flag_val">Flag String:</label>
+            <input type="text" id="flag_val" name="flag_val" placeholder="{YOUR_FLAG_HERE}" required>
+            <input type="submit" value="Check Flag">
+        </form>
+        <br>
+        <a href="/dashboard">← Back to Dashboard</a>
+    </div>
+</body>
+</html>

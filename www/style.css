@@ -1,0 +1,156 @@
+body {
+    background-color: #3b0764; /* Dark Purple Background */
+    color: #f0f0f0; /* Light text */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    display: flex;
+    width: 900px;
+    background: linear-gradient(135deg, #4c116e, #2a0450); /* Gradient background for the main box */
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    gap: 20px;
+}
+
+.header {
+    position: absolute;
+    top: 20px;
+    right: 50%;
+    transform: translateX(50%);
+    color: #ffcc00; /* Yellow highlight */
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+    font-size: 2em;
+    font-weight: bold;
+    letter-spacing: 5px;
+    padding: 10px 0;
+    width: 100%;
+    text-align: center;
+}
+
+.dashboard-panel {
+    flex: 1;
+    padding: 20px;
+    background-color: #3a0b59; /* Slightly lighter inner panel */
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.flags-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    justify-content: center;
+}
+
+h1 {
+    color: #ffcc00;
+}
+
+h3 {
+    color: #a879d0;
+    margin-top: 20px;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+li {
+    background-color: #4a1975;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-left: 4px solid #ffcc00;
+}
+
+.logout-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 8px 15px;
+    background-color: #7b00e0;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #5d00a8;
+}
+
+/* Flag Submission Styling */
+.flag-submission {
+    display: flex;
+    gap: 10px;
+}
+
+.flag-input {
+    flex-grow: 1;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #632d80;
+    color: #f0f0f0;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.flag-input:focus {
+    outline: none;
+    background-color: #78359b;
+}
+
+.flag-input[disabled] {
+    background-color: #4c116e;
+    cursor: not-allowed;
+}
+
+.check-btn {
+    padding: 15px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    background: linear-gradient(to right, #7b00e0, #a879d0); /* Gradient Check Button */
+    color: white;
+    transition: background 0.3s, transform 0.1s;
+}
+
+.check-btn:hover:not(.correct):not(.wrong) {
+    background: linear-gradient(to right, #9200ff, #b795e6);
+}
+
+/* Correct Flag Button */
+.check-btn.correct {
+    background: #00b33c; /* Green */
+    cursor: default;
+}
+
+/* Wrong Flag Button */
+.check-btn.wrong {
+    background: #cc0000; /* Red */
+    animation: shake 0.5s;
+}
+
+/* Shaking animation for WRONG! */
+@keyframes shake {
+    0%, 100% {transform: translateX(0);}
+    20%, 60% {transform: translateX(-5px);}
+    40%, 80% {transform: translateX(5px);}
+}
+
+/* Processing state */
+.check-btn.processing {
+    background: #ff8c00; /* Orange for loading */
+    cursor: wait;
+}

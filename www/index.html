@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<!-- FLAG 1: {SOURCE_CODE_MASTER_2025} -->
+<head>
+    <title>CTF Challenge - Login</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Specific login panel styling for index.html */
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #1a0f2e 0%, #2d1b4e 100%);
+        }
+        .login-panel {
+            background-color: #1e1136;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(123, 0, 224, 0.3);
+            text-align: center;
+            max-width: 400px;
+            border: 2px solid #7b00e0;
+        }
+        .login-panel h2 {
+            color: #ffcc00;
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .login-panel .subtitle {
+            color: #a879d0;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .login-panel input[type="text"], .login-panel input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #7b00e0;
+            background-color: #2d1b4e;
+            color: #ffffff;
+            box-sizing: border-box;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+        .login-panel input[type="text"]:focus, .login-panel input[type="password"]:focus {
+            outline: none;
+            border-color: #ffcc00;
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+        }
+        .login-panel input[type="submit"] {
+            width: 100%;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            background: linear-gradient(to right, #7b00e0, #a879d0);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+        .login-panel input[type="submit"]:hover {
+            background: linear-gradient(to right, #9200ff, #b795e6);
+            box-shadow: 0 5px 15px rgba(123, 0, 224, 0.4);
+        }
+        .error-msg {
+            display: none;
+            background-color: #cc0000;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+        .error-msg.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-panel">
+        <h2>CTF Challenge</h2>
+        <p class="subtitle">[ Capture The Flags ]</p>
+        <div id="error-msg" class="error-msg"></div>
+        <form id="login-form" action="/login" method="POST">
+            <input type="text" name="user" placeholder="Username" required>
+            <input type="password" name="pass" placeholder="Password" required>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const errorMsg = document.getElementById('error-msg');
+            
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    body: new URLSearchParams(formData)
+                });
+                
+                if (response.redirected || response.status === 302) {
+                    window.location.href = '/dashboard';
+                } else if (response.status === 401) {
+                    errorMsg.textContent = '[-] Invalid credentials. Access denied.';
+                    errorMsg.classList.add('show');
+                    setTimeout(() => errorMsg.classList.remove('show'), 3000);
+                } else {
+                    window.location.href = '/dashboard';
+                }
+            } catch (error) {
+                errorMsg.textContent = '[-] Connection error. Try again.';
+                errorMsg.classList.add('show');
+            }
+        });
+    </script>
+</body>
+</html>

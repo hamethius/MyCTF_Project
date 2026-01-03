@@ -1,0 +1,9 @@
+# Student Portal Credentials
+# For testing purposes only - DO NOT USE IN PRODUCTION
+
+student1:pass1
+student2:pass2
+student3:pass3
+
+# Note: Admin credentials are NOT stored here.
+# System administrators use separate authentication.
